@@ -1,0 +1,32 @@
+name: "Install Community ID package on top of compiled Zeek 4.0.0"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  runtest:
+    runs-on: macos-10.15
+    steps:
+    - name: Install dependencies
+      run: brew install cmake swig openssl bison
+    - name: Download/compile/install Zeek 4.0.0
+      run: |
+        tar xzvf zeek-4.0.0.tar.gz
+        cd zeek-4.0.0
+        ./configure
+        make -j$(sysctl -n hw.logicalcpu)
+        sudo make -j$(sysctl -n hw.logicalcpu) install
+        export PATH="/usr/local/zeek/bin:$PATH"
+    - name: Prepare Zeek Package Manager
+      run: |
+        pip3 install GitPython semantic-version
+        sudo zkg config
+    - name: Install Community ID package
+      run: |
+        sudo zkg install --force https://github.com/corelight/zeek-community-id
+    - name: Test Community ID package
+        cd
+        wget https://archive.wrccdc.org/pcaps/2018/wrccdc.2018-03-23.010014000000000.pcap.gz
+        gunzip wrccdc.2018-03-23.010014000000000.pcap.gz
+        zeek -C -r wrccdc.2018-03-23.010014000000000.pcap --exec "@load packages" local
+        cat conn.log | zeek-cut community_id | head -1
