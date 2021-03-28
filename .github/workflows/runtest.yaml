@@ -25,6 +25,7 @@ jobs:
       run: |
         sudo zkg install --force https://github.com/corelight/zeek-community-id
     - name: Test Community ID package
+      run: |
         cd
         wget https://archive.wrccdc.org/pcaps/2018/wrccdc.2018-03-23.010014000000000.pcap.gz
         gunzip wrccdc.2018-03-23.010014000000000.pcap.gz
