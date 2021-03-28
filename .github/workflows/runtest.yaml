@@ -21,6 +21,7 @@ jobs:
     - name: Prepare Zeek Package Manager
       run: |
         pip3 install GitPython semantic-version
+        sudo pip3 install zkg
         sudo zkg config
     - name: Install Community ID package
       run: |
