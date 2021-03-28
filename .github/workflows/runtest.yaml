@@ -11,6 +11,7 @@ jobs:
       run: brew install cmake swig openssl bison
     - name: Download/compile/install Zeek 4.0.0
       run: |
+        wget https://github.com/zeek/zeek/releases/download/v4.0.0/zeek-4.0.0.tar.gz
         tar xzvf zeek-4.0.0.tar.gz
         cd zeek-4.0.0
         ./configure
